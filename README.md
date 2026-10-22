@@ -21,9 +21,7 @@
 | ----- | ----------------------------------------------------------------------------- | ---- |
 | 4-2-1 | 哪個指令能以人類可讀單位顯示記憶體使用量？寫出完整指令。                      |   使用 free -h 可以以人類可讀的單位顯示系統的記憶體使用情況，包括 RAM 的總容量、已使用量、剩餘量、快取及可用量，同時顯示 Swap 的使用情形。   |
 | 4-2-3 | 為什麼 Linux 常看起來 free 很小？應優先看哪個欄位判斷「還能不能再吃記憶體」？ |    Linux 會將部分閒置記憶體用作 Buffer 或 Cache，以提升系統效能，因此 free 較低不一定代表記憶體不足。判斷系統是否還有足夠的記憶體執行新程式時，應優先觀察 available 欄位。  |
-| 4-2-4 | 記錄本機 `free -h` 的 available 與 free，並解釋差異                           |   本機 VMware SLES 15 SP7 虛擬機具有約 3.2 GiB RAM。透過 free -h 可觀察到 free 為 1.7 GiB，而 available 為 2.1 GiB。
-兩者的差異在於 free 只表示完全未使用的實體記憶體，而 available 還考慮部分可回收的快取與其他記憶體，因此較適合用來評估系統能否執行新的應用程式。
-此外，本機 Swap 總容量為 2.0 GiB，目前使用量為 0 B，顯示本次觀測未出現明顯的 Swap 使用壓力。   |
+| 4-2-4 | 記錄本機 `free -h` 的 available 與 free，並解釋差異                           |   本機 VMware SLES 15 SP7 虛擬機具有約 3.2 GiB RAM。透過 free -h 可觀察到 free 為 1.7 GiB，而 available 為 2.1 GiB。兩者的差異在於 free 只表示完全未使用的實體記憶體，而 available 還考慮部分可回收的快取與其他記憶體，因此較適合用來評估系統能否執行新的應用程式。此外，本機 Swap 總容量為 2.0 GiB，目前使用量為 0 B，顯示本次觀測未出現明顯的 Swap 使用壓力。   |
 
 <img width="661" height="78" alt="image" src="https://github.com/user-attachments/assets/44fb99d4-5c46-4353-a5a0-b3dbe255fbba" />  
 <img width="899" height="145" alt="image" src="https://github.com/user-attachments/assets/350a70eb-0c0d-4ace-8143-aecc419943e2" />
