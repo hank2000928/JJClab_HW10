@@ -36,3 +36,16 @@
 |free	|完全未被使用的記憶體|
 |buff/cache	Linux Kernel| 用於緩衝區、檔案快取等的記憶體，其中部分可在需要時回收|
 |available	Kernel |估計在不大量使用 Swap 的情況下，還能提供給新應用程式的記憶體容量|
+
+## 4-3. Disk
+| 指令       | 意義（請填） | 本機觀察摘要 |
+| ---------- | ------------ | ------------ |
+| `lsblk`    | 查看磁碟、分割區與區塊裝置的階層關係 |透過 lsblk 及 findmnt / 可確認，根目錄 / 使用 /dev/mapper/vg_system-lv_root，檔案系統類型為 XFS。此Logical Volume屬於Volume Group vg_system，其底層儲存裝置為 /dev/sda4，而 /dev/sda4 位於 VMware 的 60 GiB 虛擬磁碟 /dev/sda 中。因此本機根目錄使用 LVM 管理，而非直接使用一般磁碟分割區。|
+| `fdisk -l` | 查看磁碟分割資訊，包括容量及分割表   |如下圖|
+| `df -h`    | 查看已掛載檔案系統的容量與使用率     |本次透過 df -h 檢查 SLES 虛擬機的磁碟使用情況，發現根目錄 / 的使用率為 22%，/var 為 4%，/tmp 和 /home 均為 3%，/boot 為 13%。所有主要檔案系統均具有充足的可用容量，因此目前沒有接近滿載的現象。|
+
+<img width="899" height="575" alt="image" src="https://github.com/user-attachments/assets/9beb0666-1994-4f52-ac64-96fc5aa4484a" />
+
+<img width="912" height="53" alt="image" src="https://github.com/user-attachments/assets/1c9e3ddd-88d0-4f01-ad03-e6c6df8b514d" />
+
+<img width="924" height="216" alt="image" src="https://github.com/user-attachments/assets/c122055f-7ccc-4e57-ae47-d247d4206e9c" />
