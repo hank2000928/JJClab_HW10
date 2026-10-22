@@ -49,3 +49,13 @@
 <img width="912" height="53" alt="image" src="https://github.com/user-attachments/assets/1c9e3ddd-88d0-4f01-ad03-e6c6df8b514d" />
 
 <img width="924" height="216" alt="image" src="https://github.com/user-attachments/assets/c122055f-7ccc-4e57-ae47-d247d4206e9c" />
+
+## 4-4. NIC 介面（ip / ethtool）
+
+| 小題  | 問題                                                          | 作答 |
+| ----- | ------------------------------------------------------------- | ---- |
+| 4-4-1 | `ip a` 與 `ifconfig` 在現代 SLES 上如何取捨？|優先使用 ip 指令，因為它是 iproute2 工具集的一部分，能夠查看及管理網路介面、IP 位址、路由及鄰居資訊。ifconfig 屬於較舊的 net-tools 工具集，雖然仍可用於查詢部分網路資訊，但功能與維護方式較不符合現代 Linux 的需求。   |
+| 4-4-2 | `ethtool` 適合看哪些網卡層資訊（速率、雙工、驅動、offload）？ | ethtool 是 Linux 用於查詢及管理網路介面底層參數的工具，可查看網卡連結速度、全雙工或半雙工模式、自動協商、連結狀態及網卡驅動程式。|
+
+
+## 4-5. UMA / NUMA 拓樸
