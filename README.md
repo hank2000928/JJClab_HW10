@@ -87,3 +87,18 @@
 <img width="919" height="453" alt="image" src="https://github.com/user-attachments/assets/13001873-fdb3-491c-95cf-d050797977ab" />
 
 ## 4-8. USB Storage：對應區塊裝置名稱
+
+| 小題  | 任務                                                                           | 作答 |
+| ----- | ------------------------------------------------------------------------------ | ---- |
+| 4-8-1 | 如何查看外接硬碟對應到系統中的**區塊裝置名稱**？寫出指令與本機（或模擬）結果。 | 本次使用 lsusb 查看 USB 裝置，觀察到 VMware Virtual USB Hub、Virtual Mouse 以及 Linux Foundation USB Root Hub，未發現 USB 外接儲存裝置。使用 lsblk 確認目前主要區塊裝置為 /dev/sda（60 GiB VMware 虛擬磁碟）及 /dev/sr0（虛擬光碟機）。 |
+
+### 4-8-2. 空間問題、裝置關係、效能問題，各應先看哪類指令？
+
+|問題需求|推薦方法|判讀重點|
+|---|---|---|
+|檔案系統空間不足|	df -h|	Use%、Avail
+|磁碟與分割區關係|	lsblk、lsblk -f|	裝置、分割區、LVM、掛載點
+|USB 裝置偵測|	lsusb、dmesg|	新設備是否被辨識
+|磁碟效能異常|	iostat -x、iotop|	I/O 延遲、裝置忙碌程度與占用行程
+
+<img width="931" height="306" alt="image" src="https://github.com/user-attachments/assets/1d50aa46-ce6b-43fa-a8e2-3ecc17855517" />
