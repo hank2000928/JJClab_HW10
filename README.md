@@ -59,3 +59,31 @@
 
 
 ## 4-5. UMA / NUMA 拓樸
+
+| 小題  | 問題                                                                                                                                              | 作答 |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| 4-5-1 | 解釋 **UMA（Uniform Memory Access）** 與 **NUMA（Non-Uniform Memory Access）** 的主要差異。|UMA 為均勻記憶體存取架構，CPU 存取主記憶體的延遲大致相同。NUMA 為非均勻記憶體存取架構，記憶體依 CPU Node 分布，CPU 存取本地記憶體通常比遠端記憶體具有更低的延遲。因此 NUMA 系統需要考慮 CPU 與記憶體之間的親和性，以減少跨 Node 存取所造成的效能損失。  |
+| 4-5-2 | 一台雙 Socket 伺服器，如何確認系統共有幾個 **NUMA Node**，以及每個 Node 分別包含哪些 **CPU 邏輯核心** 與多少 **記憶體容量**？寫出指令與本機結果。 |本次使用 lscpu 與 numactl --hardware 檢查 VMware SLES 15 SP7 虛擬機的 NUMA 拓樸。系統共有 1 個 NUMA Node，編號為 Node 0，其中包含邏輯 CPU 0 與 CPU 1。Node 0 的記憶體容量為 3252 MB，查詢當下的剩餘記憶體為 1739 MB。|
+| 4-5-3 | 如何顯示每個 Node 的記憶體 **size** 與 **free**？ |可以使用 numactl --hardware 顯示各 NUMA Node 的 CPU 清單、記憶體總容量（Size）與剩餘容量（Free）。也可直接讀取 /sys/devices/system/node/node*/meminfo。本次實驗中，Node 0 的 MemTotal 為 3330856 kB，MemFree 為 1781176 kB，與 numactl 的查詢結果一致。|
+| 4-5-4 | 為什麼高效能與資料庫調校常需檢視 NUMA 拓樸？`hwloc-ls`／`lstopo` 適合看什麼？ | 多 Socket 的 HPC 伺服器或資料庫系統中，CPU 與記憶體可能分布於不同 NUMA Node。若行程頻繁存取遠端 Node 的記憶體，可能增加記憶體延遲並影響效能。因此系統調校時，需要分析 CPU 與記憶體的親和性，使行程盡可能使用本地記憶體。hwloc-ls 與 lstopo 能顯示 CPU Socket、Core、Cache、NUMA Node 及其他硬體資源的拓樸，有助於辨識硬體結構與規劃行程配置。     |
+
+<img width="929" height="541" alt="image" src="https://github.com/user-attachments/assets/dde1b621-f118-4515-94f4-2b77dd0d0684" />
+
+## 4-6. DMI：記憶體插槽與主機板（不停機盤點）
+
+| 小題  | 任務                                                                                                                                                                      | 作答 |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| 4-6-1 | 用 `dmidecode` 查出記憶體插槽與規格（Memory），以及主機板／系統廠商（System / Motherboard）。寫出指令，並記錄廠商、型號、現有模組 Size／Type／Speed（能看到的欄位即可）。 |VMware Virtual Platform；虛擬主機板識別為 Intel 440BX；RAM 為 4 GB，類型 DRAM，速度 Unknown|
+| 4-6-2 | 用 `dmidecode` 確認主機板是否還有空的記憶體插槽（Slots）。哪個欄位表示「此槽未插模組」？本機空槽數量？  |DMI 列出 64 個 RAM 插槽，其中 1 個安裝、63 個未安裝；非實體擴充能力的證據|
+| 4-6-3 | `dmidecode` 讀的是什麼資料？VM 中內容取決於什麼？ |dmidecode 讀取 SMBIOS/DMI 資訊；VM 中內容由虛擬化平台提供，不能直接當作 Host 的實體規格|
+
+## 4-7. PCI：新插網卡系統看不到介面
+
+| 小題  | 任務                                                                                                    | 作答 |
+| ----- | ------------------------------------------------------------------------------------------------------- | ---- |
+| 4-7-1 | 如何快速確認硬體層面是否成功偵測到這張網卡？寫出指令與相關 `lspci` 列。                                 | 使用 lspci | grep -iE 'ethernet|network' 可以查詢 PCI 裝置列表中的網路控制器。本次VMware虛擬機查詢到Intel Corporation 82545EM Gigabit Ethernet Controller，PCI Bus ID 為 02:01.0，表示 Guest OS 已成功辨識此虛擬網路控制器。|
+| 4-7-2 | 如何查看該 PCIe 裝置目前載入的 **核心驅動程式（Kernel driver in use）** 與 **模組（Kernel modules）**？ |使用 lspci -k 可檢查 PCI 裝置的 Kernel driver in use 及 Kernel modules。本次查詢結果顯示，VMware 的 Intel 82545EM 虛擬網卡使用 e1000 驅動程式及核心模組。透過 ethtool -i eth0 再次確認，驅動為 e1000，PCI Bus ID 為 0000:02:01.0，兩者資訊相符。 |
+
+<img width="919" height="453" alt="image" src="https://github.com/user-attachments/assets/13001873-fdb3-491c-95cf-d050797977ab" />
+
+## 4-8. USB Storage：對應區塊裝置名稱
