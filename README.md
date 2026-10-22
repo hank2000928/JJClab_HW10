@@ -102,3 +102,46 @@
 |磁碟效能異常|	iostat -x、iotop|	I/O 延遲、裝置忙碌程度與占用行程
 
 <img width="931" height="306" alt="image" src="https://github.com/user-attachments/assets/1d50aa46-ce6b-43fa-a8e2-3ecc17855517" />
+
+---------------------------------
+# 練習 5. Monitor：top、iotop、iftop、nethogs
+## 5-1. top
+
+| 按鍵 | 作用（請填） |
+| ---- | ------------ |
+| `q`  |離開 top|
+| `k`  | 對指定 PID 發送訊號，通常用於終止行程  |
+| `r`  | 修改指定行程的 nice 值    |
+| `M`  | 依記憶體使用量排序   |
+| `P`  |依 CPU 使用率排序 |
+| `z`  |切換彩色顯示模式|
+
+| 小題  | 任務                                                        |
+| ----- | ----------------------------------------------------------- |
+| 5-1-1 | 開 `top`，按 `P` 依 CPU 排序，記下前三名 PID／COMMAND／%CPU |
+| 5-1-2 | 按 `M` 依記憶體排序，記下前三名 PID／COMMAND／%MEM          |
+| 5-1-3 | 說明為什麼 `top` 適合互動排查、不適合長期存檔分析           |
+
+### 5-1-1. 開 `top`，按 `P` 依 CPU 排序，記下前三名 PID／COMMAND／%CPU
+<img width="918" height="679" alt="image" src="https://github.com/user-attachments/assets/e8e3628d-ef5f-425d-b2bb-c30f7a5ad146" />
+
+|排名|	PID	|COMMAND	|%CPU|
+|---|---|---|---|
+|1	|2013|	X	|1.661%
+|2	|2164|	gnome-shell	|1.661%
+|3|	2841|	gnome-terminal-	|1.329%
+
+### 5-1-2. 按 `M` 依記憶體排序，記下前三名 PID／COMMAND／%MEM
+<img width="919" height="675" alt="image" src="https://github.com/user-attachments/assets/75513e45-1cdf-4573-8cba-f75f11e1fd9a" />
+
+|排名	|PID|	COMMAND|	%MEM|
+|---|---|---|---|
+|1|	2164|	gnome-shell	|6.328%	|
+|2|	2272	|gnome-software	|4.721%	|
+|3|	2665	|xdg-desktop-por	|2.647%	|
+
+### 5-1-3. 說明為什麼 top 適合互動排查、不適合長期存檔分析
+top 是互動式、即時更新的系統監控工具，適合快速觀察當下 CPU、記憶體及行程資源使用情況，也能透過按鍵排序，找出高資源使用率的行程。
+但一般互動式 top 不會自動建立完整的長期歷史紀錄，較不適合進行跨時段分析或長時間的效能比較。
+若需要定時採樣、保存數據或分析歷史變化，應使用 sar、pidstat 等統計工具。
+補充：top 本身也支援 Batch Mode，可以輸出資料至檔案，但它的主要使用優勢仍是即時互動觀察。
