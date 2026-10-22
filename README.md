@@ -14,3 +14,23 @@
 
 虛擬機的檢查如下:  
 <img width="868" height="93" alt="image" src="https://github.com/user-attachments/assets/ff6bbed4-8c5f-4795-a2c2-889b9e8f309a" />
+
+## 4-2. RAM（應用程式回報記憶體不足）
+
+| 小題  | 問題                                                                          | 作答 |
+| ----- | ----------------------------------------------------------------------------- | ---- |
+| 4-2-1 | 哪個指令能以人類可讀單位顯示記憶體使用量？寫出完整指令。                      |   使用 free -h 可以以人類可讀的單位顯示系統的記憶體使用情況，包括 RAM 的總容量、已使用量、剩餘量、快取及可用量，同時顯示 Swap 的使用情形。   |
+| 4-2-3 | 為什麼 Linux 常看起來 free 很小？應優先看哪個欄位判斷「還能不能再吃記憶體」？ |      |
+| 4-2-4 | 記錄本機 `free -h` 的 available 與 free，並解釋差異                           |      |
+
+<img width="661" height="78" alt="image" src="https://github.com/user-attachments/assets/44fb99d4-5c46-4353-a5a0-b3dbe255fbba" />  
+
+### 4-2-2. `free -h` 中 total／used／free／buff/cache／available 各代表什麼？  
+
+|語法|含義|
+|---|---|
+|total	|系統可使用的實體記憶體總容量|
+|used	|系統目前計算為已使用的記憶體容量|
+|free	|完全未被使用的記憶體|
+|buff/cache	Linux Kernel| 用於緩衝區、檔案快取等的記憶體，其中部分可在需要時回收|
+|available	Kernel |估計在不大量使用 Swap 的情況下，還能提供給新應用程式的記憶體容量|
